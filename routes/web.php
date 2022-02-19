@@ -25,3 +25,5 @@ Route::post('/album/update{id}',['uses' => 'AlbumController@update','as' => 'alb
 Route::get('/album/delete/{id}',['uses' => 'AlbumController@delete','as' => 'album.delete']);
 
 Route::resource('customer', 'CustomerController');
+
+//testing
