@@ -26,4 +26,6 @@ Route::get('/album/delete/{id}',['uses' => 'AlbumController@delete','as' => 'alb
 
 Route::resource('customer', 'CustomerController');
 
+Route::get('/customer/restore/{id}',['uses' => 'CustomerController@restore','as' => 'customer.restore']);
+
 //testing

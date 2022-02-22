@@ -15,11 +15,12 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        //$customers = Customer::orderBy('id','DESC')->get();
-        $customers = Customer::orderBy('id','DESC')->paginate(10);
-        //dd($customers);
+        // $customers = Customer::orderBy('id','DESC')->get();
+        // $customers = Customer::orderBy('id','DESC')->paginate(10);
+        $customers = Customer::withTrashed()->orderBy('id','DESC')->paginate(10);
+        // dd($customers);
         return View::make('customer.index',compact('customers'));
     }
 
@@ -41,7 +42,6 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
         $rules = [  'title' =>'required|alpha_num|min:3',
                     'lname'=>'required|alpha',
                     'fname'=>'required',
@@ -52,20 +52,18 @@ class CustomerController extends Controller
         $messages = [
             'required' => 'Ang :attribute field na ito ay kailangan',
             'min' => 'masyadong maigsi ang :attribute',
-            'alpha' => "pawang letra lamang",
-            'fname.required' => 'ilagay ang apelyido'
+            'fname.required' => 'lagay ang apelido'
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
-        //$validator = Validator::make($request->all(), $rules);
         
-     if ($validator->fails()) 
-        {
-            //return redirect()->back()->withInput();
+        if ($validator->fails()) {
             return redirect()->back()->withInput()->withErrors($validator);
+       
         }
             Customer::create($request->all());
-            return Redirect::to('customer')->with('success','New Customer added!'); 
-}
+            return Redirect::to('customer')->with('success','New Customer added!');
+
+    }
 
     /**
      * Display the specified resource.
@@ -73,6 +71,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function show($id)
     {
         //
@@ -86,7 +85,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customer = Customer::find($id);
+        return view('customer.edit',compact('customer'));
     }
 
     /**
@@ -98,7 +98,20 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $customer = Customer::find($id);
+        // // dd($customer);
+        // $customer->update($request->all());
+        // return Redirect::to('/customer')->with('success','Customer updated!');
+
+        $customer = Customer::find($id);
+         $validator = Validator::make($request->all(), Customer::$rules, Customer::$messages);
+
+          if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+       
+        }
+            $customer->update($request->all());
+            return Redirect::to('customer')->with('success','New Customer Updated!');
     }
 
     /**
@@ -109,6 +122,13 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
+        return Redirect::to('/customer')->with('success','Customer deleted!');
+    }
+    public function restore($id) {
+
+        Customer::withTrashed()->where('id',$id)->restore();
+        return  Redirect::route('customer.index')->with('success','customer restored successfully!');
     }
 }
