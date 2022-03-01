@@ -13,19 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/album','AlbumController@index');
+// Route::get('/album','AlbumController@index');
 
-Route::get('/album/create','AlbumController@create')->name('album.create'); // option1
+// Route::get('/album/create','AlbumController@create')->name('album.create'); // option1
 
-Route::post('/album/store',['uses' => 'AlbumController@store','as' => 'album.store']); //option2
-Route::get('/album/edit/{id}','AlbumController@edit')->name('album.edit');
+// Route::post('/album/store',['uses' => 'AlbumController@store','as' => 'album.store']); //option2
+// Route::get('/album/edit/{id}','AlbumController@edit')->name('album.edit');
 
-Route::post('/album/update{id}',['uses' => 'AlbumController@update','as' => 'album.update']); 
+// Route::post('/album/update{id}',['uses' => 'AlbumController@update','as' => 'album.update']); 
 
-Route::get('/album/delete/{id}',['uses' => 'AlbumController@delete','as' => 'album.delete']);
+// Route::get('/album/delete/{id}',['uses' => 'AlbumController@delete','as' => 'album.delete']);
 
 Route::resource('customer', 'CustomerController');
 
 Route::get('/customer/restore/{id}',['uses' => 'CustomerController@restore','as' => 'customer.restore']);
 
+Route::resource('album', 'AlbumController');
+Route::resource('artist', 'ArtistController');
+Route::resource('listener', 'ListenerController');
 //testing

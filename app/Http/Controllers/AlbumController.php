@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use \App\Models\Album;
+use \App\Models\Artist;
 use View;
 use Redirect;
 
@@ -11,14 +13,22 @@ class AlbumController extends Controller
 {
     public function index() {
       
-        $albums = Album::all();
+
+        //$albums = Album::orderBy('id','DESC')->paginate(5);
+
+    //$albums = Album::all(); 
         //dd($albums); // die and dump
         //dd(compact('albums'));
+        $albums = DB::table('artists')->join('albums','artists.id','albums.artist_id')->get();
+        //dd($albums); 
      return View::make('album.index',compact('albums'));
     }
 
     public function create() {
-        return view::make('album.create');
+        //return view::make('album.create');
+     $artists = Artist::pluck('artist_name','id');
+     //dd($artists);
+     return View::make('album.create',compact('artists'));
     }
 
     public function store(Request $request) {
@@ -50,9 +60,14 @@ class AlbumController extends Controller
     }
 
     public function edit($id) {
+        // $album = Album::find($id);
+        // //dd($album);
+        // return View::make('album.edit',compact('album'));
+
         $album = Album::find($id);
-        //dd($album);
-        return View::make('album.edit',compact('album'));
+        $artists = Artist::pluck('artist_name','id');
+        return View::make('album.edit',compact('album', 'artists'));
+
     }
 
     public function update(Request $request, $id){
@@ -66,7 +81,7 @@ class AlbumController extends Controller
      return Redirect::to('/album')->with('success','Album updated!');
     }
 
-    public function delete($id) {
+    public function destroy($id) {
          //$album = Album::find($id);
          //$album->delete();
          Album::destroy($id);
