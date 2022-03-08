@@ -14,7 +14,7 @@ class AlbumController extends Controller
     public function index() {
       
 
-        //$albums = Album::orderBy('id','DESC')->paginate(5);
+    //$albums = Album::orderBy('id','DESC')->paginate(5);
 
     //$albums = Album::all(); 
         //dd($albums); // die and dump
@@ -54,8 +54,31 @@ class AlbumController extends Controller
     //====================================
     //option3
         //dd($request->all());
-        $input = $request->all(); //returning value is array
-        Album::create($input);
+        // $input = $request->all(); //returning value is array
+        // Album::create($input);
+        //return Redirect::to('/album')->with('success','New Album Added');
+
+
+        $input = $request->all();
+        $request->validate([
+            'image' => 'mimes:jpeg,png,jpg,gif,svg',
+            // 'image' => ['mimes:jpeg,png,jpg,gif,svg|
+            //  file|max:512' ]
+        ]);
+
+        if($file = $request->hasFile('image')) {
+            $file = $request->file('image') ;
+            // $fileName = uniqid().'_'.$file->getClientOriginalName();
+            $fileName = $file->getClientOriginalName();
+            $destinationPath = public_path().'/images' ;
+            // dd($fileName);
+            //$input['img_path'] = 'images/'.$fileName;
+            
+            $input['img_path'] = 'images/'.$fileName;
+            // $album = Album::create($input);
+            $file->move($destinationPath,$fileName);
+        }
+          $album = Album::create($input);
         return Redirect::to('/album')->with('success','New Album Added');
     }
 

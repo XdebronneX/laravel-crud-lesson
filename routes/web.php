@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', function () {
+    return view('welcome');
+});
 
 // Route::get('/album','AlbumController@index');
 
@@ -24,11 +27,19 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/album/delete/{id}',['uses' => 'AlbumController@delete','as' => 'album.delete']);
 
-Route::resource('customer', 'CustomerController');
+//Route::resource('customer', 'CustomerController');
 
 Route::get('/customer/restore/{id}',['uses' => 'CustomerController@restore','as' => 'customer.restore']);
 
-Route::resource('album', 'AlbumController');
-Route::resource('artist', 'ArtistController');
-Route::resource('listener', 'ListenerController');
+//Route::resource('album', 'AlbumController');
+//Route::resource('artist', 'ArtistController');
+//Route::resource('listener', 'ListenerController');
 //testing
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+	Route::resource('customer','CustomerController')->middleware('auth');
+	 Route::resource('album', 'AlbumController')->middleware('auth');
+	 Route::resource('artist', 'ArtistController')->middleware('auth');
+	 Route::resource('listener', 'ListenerController')->middleware('auth');

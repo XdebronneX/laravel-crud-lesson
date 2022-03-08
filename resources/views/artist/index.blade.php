@@ -1,5 +1,6 @@
 @extends('layouts.base')
 @section('body')
+
 <div class="container">
     <br />
     @if ( Session::has('success'))
@@ -8,12 +9,13 @@
       </div><br />
      @endif
     <table class="table table-striped">
-      <tr>{{ link_to_route('artist.create', 'Add new artist:')}}</tr>
+      <tr>{{link_to_route('artist.create', 'Add new artist:')}}</tr>
 <thead>
       <tr>
         <th>Artist ID</th>
         <th>Artist Name</th>
         <th>Album Name</th>
+        <th>Artist Image</th>
         <th colspan="2">Action</th>
       </tr>
     </thead>
@@ -23,8 +25,8 @@
       <tr>
         <td>{{$artist->id}}</td>
         <td>{{$artist->artist_name}}</td>
-        <td>{{$artist->album_name}}</td>
-        <td>
+        <td>{{$artist->album_name}}
+        <td><img src="{{asset('storage/'.$artist->img_path) }}" width="80" height="80" /></td>
         {{-- @foreach($artist->albums as $art)
          <ul>{{ $art->id . $art->name}}</ul> 
         @endforeach --}}
@@ -45,3 +47,8 @@
   </table>
   </div>
 @endsection
+
+
+
+
+

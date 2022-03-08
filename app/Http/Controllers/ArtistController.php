@@ -20,9 +20,9 @@ class ArtistController extends Controller
     {
         $artists = DB::table('artists')
             ->leftJoin('albums','artists.id','=','albums.artist_id')
-            ->select('artists.id','albums.album_name','artists.artist_name')
+            ->select('artists.id','albums.album_name','artists.artist_name', 'artists.img_path')
             ->get();
-        //$artists = Artist::all();
+
         return View::make('artist.index',compact('artists'));
     }
 
@@ -44,8 +44,25 @@ class ArtistController extends Controller
      */
     public function store(Request $request)
     {
+        // $input = $request->all();
+        // Artist::create($input);
+        // return Redirect::to('artist');
+       
         $input = $request->all();
-        Artist::create($input);
+        $request->validate([
+            'image' => 'mimes:jpeg,png,jpg,gif,svg',
+        ]);
+        if($file = $request->hasFile('image')) {
+            
+            $file = $request->file('image') ;
+            // $fileName = uniqid().'_'.$file->getClientOriginalName();
+            $fileName = $file->getClientOriginalName();
+            // dd($fileName);
+            $request->image->storeAs('images', $fileName, 'public');
+            $input['img_path'] = 'images/'.$fileName;
+            $artists = Artist::create($input);
+            // $file->move($destinationPath,$fileName);
+        }
         return Redirect::to('artist');
     }
 
@@ -100,3 +117,5 @@ class ArtistController extends Controller
          return Redirect::to('/artist')->with('success','Artist deleted!');
     }
 }
+
+

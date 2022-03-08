@@ -10,5 +10,5 @@ class Album extends Model
     use HasFactory;
     //protected $fillable = ['title','artist','genre','year'];
 
-    protected $fillable = ['album_name','artist_id'];
+    protected $fillable = ['album_name','artist_id', 'img_path'];
 }

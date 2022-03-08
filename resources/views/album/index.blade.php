@@ -1,5 +1,6 @@
 {{-- {{ dd($albums) }} --}}
 @extends('layouts.base')
+@include('layouts.app')
 @section('body')
 <div class="container">
        <a href="{{route('album.create')}}" class="btn btn-primary a-btn-slide-text">
@@ -22,6 +23,7 @@
         <th>Album ID</th>
         <th>title</th>
         <th>Artist</th>
+        <th>Album Cover</th>
         <th>Action</th>
         {{-- <th>Genre</th>
         <th>Year</th> --}}
@@ -33,6 +35,7 @@
           <td>{{$album->id}}</td>
           <td>{{$album->album_name}}</td>
           <td>{{$album->artist_name}}</td>
+          <td><img src="{{ asset($album->img_path) }}"width="80" height="80" /></td>
           {{-- <td>{{$album->genre}}</td>
           <td>{{$album->year}}</td> --}}
           <td align="center"><a href="{{route('album.edit',$album->id)}}">

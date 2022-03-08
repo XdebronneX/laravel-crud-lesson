@@ -7,6 +7,8 @@ use App\Models\Customer;
 use View;
 use Validator;
 use Redirect;
+use Storage;
+use File;
 
 class CustomerController extends Controller
 {
@@ -57,8 +59,13 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
         
         if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-       
+        return redirect()->back()->withInput()->withErrors($validator);
+
+        $path = Storage::putFileAs('images/customer', $request->file('image'),$request->file('image')->getClientOriginalName());
+        // dd($path);
+        
+        $request->merge(["img_path"=>$request->file('image')->getClientOriginalName()]);
+
         }
             Customer::create($request->all());
             return Redirect::to('customer')->with('success','New Customer added!');

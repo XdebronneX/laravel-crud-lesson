@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\View;
+//use Illuminate\Support\Facades\Redirect;
 use View;
 use App\Models\Album;
 use App\Models\Listener;
@@ -18,6 +20,7 @@ class ListenerController extends Controller
      */
     public function index()
     {
+        
         $listeners = DB::table('listeners')
                         ->leftJoin('album_listener','listeners.id','=','album_listener.listener_id')
                         ->leftJoin('albums','albums.id','=','album_listener.album_id')
