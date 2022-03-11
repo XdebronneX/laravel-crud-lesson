@@ -1,5 +1,6 @@
-@extends('layouts.base')
-@section('body')
+{{-- @extends('layouts.base') --}}
+@extends('layouts.app')
+@section('content')
 {{--{{dd($errors)}} --}}
 <div class="container">
    <ul class="errors">

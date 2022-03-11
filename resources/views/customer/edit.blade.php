@@ -1,5 +1,6 @@
-@extends('layouts.base')
-@section('body')
+{{-- @extends('layouts.base') --}}
+@extends('layouts.app')
+@section('content')
 <div class="container">
   <h2>Edit Customer</h2>
    {{ Form::model($customer,['route' => ['customer.update',$customer->id],'method'=>'PUT']) }}

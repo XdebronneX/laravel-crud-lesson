@@ -16,6 +16,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('customer', 'CustomerController');
+Route::resource('item', 'ItemController');
+
+
+
+
 // Route::get('/album','AlbumController@index');
 
 // Route::get('/album/create','AlbumController@create')->name('album.create'); // option1
@@ -29,17 +35,27 @@ Route::get('/', function () {
 
 //Route::resource('customer', 'CustomerController');
 
-Route::get('/customer/restore/{id}',['uses' => 'CustomerController@restore','as' => 'customer.restore']);
+//Route::get('/customer/restore/{id}',['uses' => 'CustomerController@restore','as' => 'customer.restore']);
 
 //Route::resource('album', 'AlbumController');
 //Route::resource('artist', 'ArtistController');
 //Route::resource('listener', 'ListenerController');
 //testing
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::group(['middleware' => ['auth']], function () { 
+//     Route::get('/customer/restore/{id}','CustomerController@restore')->name('customer.restore');
+// 	Route::resource('customer','CustomerController');
+// 	Route::resource('album','AlbumController');
+// 	Route::resource('artist','ArtistController');
+// 	Route::resource('listener','ListenerController');
 
-	Route::resource('customer','CustomerController')->middleware('auth');
-	 Route::resource('album', 'AlbumController')->middleware('auth');
-	 Route::resource('artist', 'ArtistController')->middleware('auth');
-	 Route::resource('listener', 'ListenerController')->middleware('auth');
+// });
+
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+	// Route::resource('customer','CustomerController')->middleware('auth');
+	//  Route::resource('album', 'AlbumController')->middleware('auth');
+	//  Route::resource('artist', 'ArtistController')->middleware('auth');
+	//  Route::resource('listener', 'ListenerController')->middleware('auth');

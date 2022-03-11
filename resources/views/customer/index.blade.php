@@ -1,5 +1,6 @@
-@extends('layouts.base')
-@section('body')
+{{-- @extends('layouts.base') --}}
+@extends('layouts.app')
+@section('content')
   <div class="container">
        <a href="{{route('customer.create')}}" class="btn btn-primary a-btn-slide-text">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

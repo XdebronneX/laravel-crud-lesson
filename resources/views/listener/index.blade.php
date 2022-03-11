@@ -1,5 +1,6 @@
-@extends('layouts.base')
-@section('body')
+{{-- @extends('layouts.base') --}}
+@extends('layouts.app')
+@section('content')
 <div class="container">
 <br />
     @if ( Session::has('success'))

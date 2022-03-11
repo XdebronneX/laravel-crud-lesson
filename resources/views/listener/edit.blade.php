@@ -1,5 +1,6 @@
-@extends('layouts.base')
-@section('body')
+{{-- @extends('layouts.base') --}}
+@extends('layouts.app')
+@section('content')
  <div class="container">
       <h2>Update listener</h2><br/>
 {!! Form::model($listener,['method'=>'PUT','route' => ['listener.update',$listener->id]]) !!}

@@ -1,5 +1,6 @@
-@extends('layouts.base')
-@section('body')
+{{-- @extends('layouts.base') --}}
+@extends('layouts.app')
+@section('content')
 <div class="container">
   <h2>Create new album</h2>
   {{-- <form method="post" action="{{url('store')}}" > --}}

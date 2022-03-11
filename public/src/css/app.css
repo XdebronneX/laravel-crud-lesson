@@ -1,0 +1,6 @@
+.thumbnail img{
+    max-height: 150px;
+}
+.caption span{
+    float:right;
+}
