@@ -15,11 +15,16 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#"><i class="fas fa-cart-arrow-down"></i> Shopping Cart</a></li>
         <li class="dropdown">
-        	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i> User Account <span class="caret"></span></a>
-        	<ul class="dropdown-menu">
-            <li><a href="#">Action</a>User Account</li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a>Logout</li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i> User Management<span class="caret"></span></a>
+         <ul class="dropdown-menu">
+              @if (Auth::check())
+              <li><a href="{{ route('user.profile') }}">User Profile</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="{{ route('user.logout') }}">Logout</a></li>
+            @else
+              <li><a href="{{ route('user.signup') }}">Signup</a></li>
+              <li><a href="{{ route('user.signin') }}">Signin</a></li>
+            @endif
           </ul>
         </li>
       </ul>
