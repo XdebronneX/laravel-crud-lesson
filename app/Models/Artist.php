@@ -11,4 +11,9 @@ class Artist extends Model
     
     protected $guarded = ['id','image'];
 
+    public function albums() 
+    {
+        return $this->hasMany('App\Models\Album');
+    }
+
 }

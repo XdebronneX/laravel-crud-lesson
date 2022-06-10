@@ -9,4 +9,8 @@ class Listener extends Model
 {
     use HasFactory;
     protected $fillable = ['listener_name'];
+    public function albums()
+    {
+    return $this->belongsToMany(Album::class);
+    }
 }

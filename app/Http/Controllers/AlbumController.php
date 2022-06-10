@@ -19,8 +19,37 @@ class AlbumController extends Controller
     //$albums = Album::all(); 
         //dd($albums); // die and dump
         //dd(compact('albums'));
-        $albums = DB::table('artists')->join('albums','artists.id','albums.artist_id')->get();
+
+        // $albums = DB::table('artists')
+        // ->join('albums','artists.id','albums.artist_id')
+        // ->get();
         //dd($albums); 
+        // return View::make('album.index',compact('albums'));
+
+//===========================New Method=================
+
+        // yung nasa with ay method hindi tablename
+        // yung artist method yan na nasa model ng album
+        //dynamic property
+        $albums = Album::with('artist','listeners')->get();
+        //$albums = Album::with('artist')->orderBy('album_name', 'DESC')->get();
+        // $albums = Album::all();
+        //dump($albums);
+
+        //hiram lang
+    //     foreach($albums as $album){
+    //     // dump($album->album_name);
+    //     // dump($album->artist_id);
+    //     dump($album);
+    //     dump($album->artist->artist_name);
+    // }
+
+//==================================
+        //$albums = Album::all();
+        // foreach ($albums as $album) {
+        //  //dump($album->album_name);
+        //  dump($album->artist->artist_name); // this is lazy loaded
+        // }
      return View::make('album.index',compact('albums'));
     }
 
@@ -59,6 +88,15 @@ class AlbumController extends Controller
         //return Redirect::to('/album')->with('success','New Album Added');
 
 
+//==========New Method============
+        $artist = Artist::find($request->artist_id);
+        // dd($artist);
+        $album = new Album();
+        $album->album_name = $request->album_name;
+        // $album->artist_id = $request->artist_id;
+        $album->artist()->associate($artist);
+        // $album->save();
+
         $input = $request->all();
         $request->validate([
             'image' => 'mimes:jpeg,png,jpg,gif,svg',
@@ -87,27 +125,61 @@ class AlbumController extends Controller
         // //dd($album);
         // return View::make('album.edit',compact('album'));
 
-        $album = Album::find($id);
+        // $album = Album::find($id);
+        // $artists = Artist::pluck('artist_name','id');
+        // return View::make('album.edit',compact('album', 'artists'));
+
+//================New Method
+
+        $album = Album::with('artist')->where('id',$id)->first();
+        // $album = Album::with('artist')->find($id)->first();
+        // $albums = Album::with('artist')->where('id',$id)->take(1)->get();
+        // dd($album,$albums);
+        //$artist = Artist::where('id',$album->artist_id)->pluck('name','id');
+        // dd($album);
         $artists = Artist::pluck('artist_name','id');
-        return View::make('album.edit',compact('album', 'artists'));
+         return View::make('album.edit',compact('album', 'artists'));
 
     }
 
     public function update(Request $request, $id){
      //dd($request);
      //$album = Album::find($request->id);
-     $album = Album::find($id);
-     //dd($album,$request->all());
-     //dd($album,$request);
-     //dd($album);
-     $album->update($request->all());
+     // $album = Album::find($id);
+     // //dd($album,$request->all());
+     // //dd($album,$request);
+     // //dd($album);
+     // $album->update($request->all());
+     // return Redirect::to('/album')->with('success','Album updated!');
+
+
+
+//===================New Method========
+
+         // $album = Album::find($id);
+       //  // dd($album);
+       //  $album->update($request->all());
+       //  return Redirect::route('album.index')->with('success','Album updated!');
+
+        $artist = Artist::find($request->artist_id);
+        // dd($artist);
+        $album = Album::find($id);
+        $album->album_name = $request->album_name;
+        $album->artist()->associate($artist);
+        $album->save();
      return Redirect::to('/album')->with('success','Album updated!');
     }
 
     public function destroy($id) {
          //$album = Album::find($id);
          //$album->delete();
-         Album::destroy($id);
-         return Redirect::to('/album')->with('success','Album deleted!');
+         // Album::destroy($id);
+         // return Redirect::to('/album')->with('success','Album deleted!');
+
+        $album = Album::find($id);
+        $album->listeners()->detach();
+        $album->delete();
+        
+        return Redirect::route('album.index')->with('success','Album deleted!');
     }
 }

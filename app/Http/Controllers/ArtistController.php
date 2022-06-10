@@ -18,12 +18,39 @@ class ArtistController extends Controller
      */
     public function index()
     {
-        $artists = DB::table('artists')
-            ->leftJoin('albums','artists.id','=','albums.artist_id')
-            ->select('artists.id','albums.album_name','artists.artist_name', 'artists.img_path')
-            ->get();
+        // $artists = DB::table('artists')
+        //     ->leftJoin('albums','artists.id','=','albums.artist_id')
+        //     ->select('artists.id','albums.album_name','artists.artist_name', 'artists.img_path')
+        //     ->get();
 
-        return View::make('artist.index',compact('artists'));
+        // return View::make('artist.index',compact('artists'));
+
+//===========New Lesson============
+        // this is lazy loaded
+
+     $artists = Artist::with('albums')->get(); 
+    //  foreach ($artists as $artist) 
+    // {
+    //     dump($artist);
+    //     dump($artist->artist_name);
+    //     dump($artist->);
+
+    // } 
+
+
+//============================
+    //$artists = Artist::all();
+    // foreach ($artists as $artist) 
+    // {
+    //     dump($artist->artist_name);
+    //     dump($artist->albums);
+    // foreach ($artist->albums as $album) 
+    // {
+    //     dump($album->album_name);
+    // }
+    //      // dump($album->artist->artist_name); // this is lazy loaded
+    //     }
+     return View::make('artist.index',compact('artists'));
     }
 
     /**
@@ -63,7 +90,7 @@ class ArtistController extends Controller
             $artists = Artist::create($input);
             // $file->move($destinationPath,$fileName);
         }
-        return Redirect::to('artist');
+        return Redirect::to('artist')->with('success','New Artist Added');
     }
 
     /**
@@ -112,9 +139,18 @@ class ArtistController extends Controller
      */
     public function destroy($id)
     {
-        Album::where('artist_id',$id)->delete();
-        Artist::destroy($id);
+        $artist = Artist::find($id);
+        // Album::where('artist_id',$artist->id)->delete();
+        $artist->albums()->delete();
+
+        $artist->delete();
+        $artists = Artist::with('albums')->get();
+         //return View::make('artist.index',compact('artists'));
          return Redirect::to('/artist')->with('success','Artist deleted!');
+        //=========================
+        // Album::where('artist_id',$id)->delete();
+        // Artist::destroy($id);
+        //  return Redirect::to('/artist')->with('success','Artist deleted!');
     }
 }
 

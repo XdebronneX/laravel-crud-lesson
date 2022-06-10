@@ -11,4 +11,15 @@ class Album extends Model
     //protected $fillable = ['title','artist','genre','year'];
 
     protected $fillable = ['album_name','artist_id', 'img_path'];
+
+    public function artist() 
+    {
+        return $this->belongsTo('App\Models\Artist');
+    }
+
+    public function listeners()
+    {
+        return $this->belongsToMany('App\Models\Listener');
+    }
+
 }
